@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#393a3f"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/search_view_text"
+            android:layout_width="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="2dp"
+            android:text="全部" />
+
+        <ImageView
+            android:id="@+id/search_view_img"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/search_view_text"
+            android:src="@drawable/ic_keyboard_arrow_down_white_24dp" />
+
+        <EditText
+            android:id="@+id/search_view_edit"
+            android:layout_width="wrap_content"
+            android:hint="输入"
+            android:textColorHint="#e0e0e0"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/search_view_edit_img"
+            android:layout_toRightOf="@+id/search_view_img"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:id="@+id/search_view_edit_img"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_search_white_72pt_2x" />
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/search_view_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/search_view_edit"></ListView>
+</LinearLayout>

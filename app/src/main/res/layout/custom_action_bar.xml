@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#393a3f"
+    android:layout_height="50dp">
+    <TextView
+        android:text="唐诗宋词"
+        android:textSize="24dp"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="20dp"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:id="@+id/custom_action_bar_search"
+        android:src="@drawable/ic_search_white_72pt_2x"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+
+
+</RelativeLayout>

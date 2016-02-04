@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:scrollbars="none"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tangshi_detail_view_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="24sp"
+            android:layout_marginTop="16dp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tangshi_detail_view_poet"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tangshi_detail_view_name"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tangshi_detail_view_text"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tangshi_detail_view_poet"
+            android:text="" />
+        <TextView
+            android:layout_below="@+id/tangshi_detail_view_explain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</ScrollView>
