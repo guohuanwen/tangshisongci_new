@@ -5,6 +5,7 @@
     android:background="#393a3f"
     android:layout_height="50dp">
     <TextView
+        android:id="@+id/cab_title"
         android:text="唐诗宋词"
         android:textSize="24dp"
         android:textColor="#ffffff"

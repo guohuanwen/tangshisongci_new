@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="2dp"
-            android:text="全部" />
+            android:text="诗名" />
 
         <ImageView
             android:id="@+id/search_view_img"

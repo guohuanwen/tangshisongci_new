@@ -19,16 +19,21 @@ import android.widget.TextView;
 
 import com.example.tangshisongci.R;
 import com.example.tangshisongci.model.ChinaTang;
+import com.example.tangshisongci.model.Poetry;
 import com.example.tangshisongci.model.Songci;
 import com.example.tangshisongci.model.base.BaseModel;
 import com.example.tangshisongci.model.base.MyDataBase;
 import com.example.tangshisongci.model.base.MyDataBaseSong;
+import com.example.tangshisongci.module.kit.PoetryDetailActivity;
 import com.example.tangshisongci.module.main.DirectoryItem;
 import com.example.tangshisongci.module.songci.SongciActivity;
 import com.example.tangshisongci.module.tangshi.TangshiDetailActivity;
+import com.example.tangshisongci.tool.ScreenUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by bigwen on 2016/2/1.
@@ -44,6 +49,8 @@ public class SearchView extends LinearLayout {
     private SearchAdapter searchAdapter;
     private List<DirectoryInfo> directoryInfos = new ArrayList<>();
     private int type = 0;//0：诗词名字搜索    1：人名
+    //解决 数据库中 诗词重复问题
+    private Set<String> names = new HashSet<>();
 
     public SearchView(Context context) {
         super(context);
@@ -85,87 +92,161 @@ public class SearchView extends LinearLayout {
                 }
             }
         });
+
+        typeTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopup();
+            }
+        });
     }
 
     private void initDateShici(String searchText, int type) {
         String sqlTangShi = "";
         String sqlSongci = "";
+        String sTang = "";
+        String sSong = "";
+        String sPoetry = "";
+        searchText = "%"+ searchText + "%";
         //唐诗宋词元曲诗名
         if (type == 0) {
             sqlTangShi = "select * from " + new ChinaTang().getTableName() +
                     " where title like " + " '%" + searchText + "%'";
             sqlSongci = "select * from " + new Songci().getTableName() +
                     " where title like " + " '%" + searchText + "%'";
+            sTang = "select * from "+new ChinaTang().getTableName()+" where title like ? ";
+            sSong = "select * from "+new Songci().getTableName()+" where title like ? ";
+            sPoetry = "select * from "+new Poetry().getTableName() + " where Title like ? ";
         }
         if (type == 1) {
             sqlTangShi = "select * from " + new ChinaTang().getTableName() +
-                    " where auther like " + " '%" + searchText + "%'";
+                    " where author like " + " '%" + searchText + "%'";
             sqlSongci = "select * from " + new Songci().getTableName() +
                     " where auth like " + " '%" + searchText + "%'";
+            sTang = "select * from "+new ChinaTang().getTableName()+" where author like ? ";
+            sSong = "select * from "+new Songci().getTableName()+" where auth like ? ";
+            sPoetry = "select * from "+ new Poetry().getTableName() + " where Author like ? ";
         }
-        Log.i(TAG, "initDate " + sqlTangShi);
-        MyDataBase.getInstence().loadFromDBAsyn(
-                sqlTangShi, null, new ChinaTang(), new MyDataBase.FindFinish() {
-                    @Override
-                    public void success(List<BaseModel> baseModels) {
-                        Log.i(TAG, "success " + baseModels.size());
-                        for (BaseModel baseModel : baseModels) {
-                            DirectoryInfo directoryInfo = new DirectoryInfo();
-                            ChinaTang chinaTang = (ChinaTang) baseModel;
-                            directoryInfo.setAuther(chinaTang.getAuthor());
-                            directoryInfo.setName(chinaTang.getTitle());
-                            directoryInfo.setType(1);
-                            directoryInfo.setId(chinaTang.getParentID());
-                            directoryInfos.add(directoryInfo);
-                            searchAdapter.notifyDataSetChanged();
-                        }
+        if (type == 2) {
 
-                    }
+        }
+        List<BaseModel> baseModels = MyDataBase.getInstence().loadFromDB(sTang, new String[]{searchText}, new ChinaTang());
+        Log.i(TAG, "initDateShici: "+baseModels.size());
+        if (baseModels != null && baseModels.size() > 0) {
+            for (BaseModel baseModel : baseModels) {
+                DirectoryInfo directoryInfo = new DirectoryInfo();
+                ChinaTang chinaTang = (ChinaTang) baseModel;
+                directoryInfo.setAuther(chinaTang.getAuthor());
+                directoryInfo.setName(chinaTang.getTitle());
+                names.add(chinaTang.getTitle());
+                directoryInfo.setType(1);
+                directoryInfo.setId(chinaTang.getParentID());
+                directoryInfos.add(directoryInfo);
+                searchAdapter.notifyDataSetChanged();
+            }
+        }
 
-                    @Override
-                    public void error(Exception e) {
-                        Log.e(TAG, "error " + e.toString());
-                    }
+        List<BaseModel> baseModelss = MyDataBaseSong.getInstence().loadFromDB(sSong, new String[]{searchText}, new Songci());
+        if (baseModelss != null && baseModelss.size() > 0) {
+            for (BaseModel baseModel : baseModelss) {
+                DirectoryInfo directoryInfo = new DirectoryInfo();
+                Songci chinaTang = (Songci) baseModel;
+                directoryInfo.setAuther(chinaTang.getAuth());
+                directoryInfo.setName(chinaTang.getTitle());
+                names.add(chinaTang.getTitle());
+                directoryInfo.setType(2);
+                directoryInfo.setId(chinaTang.getId());
+                directoryInfos.add(directoryInfo);
+                searchAdapter.notifyDataSetChanged();
+            }
+        }
+
+        List<BaseModel> baseModel3 = MyDataBase.getInstence().loadFromDB(sPoetry, new String[]{searchText}, new Poetry());
+        if (baseModel3 != null && baseModel3.size() > 0) {
+            for (BaseModel baseModel : baseModel3) {
+
+                DirectoryInfo directoryInfo = new DirectoryInfo();
+                Poetry chinaTang = (Poetry) baseModel;
+                if (names.contains(chinaTang.getTitle())){
+                    continue;
                 }
-        );
-        MyDataBaseSong.getInstence().loadFromDBAsyn(
-                sqlSongci, null, new Songci(), new MyDataBaseSong.FindFinish() {
-                    @Override
-                    public void success(List<BaseModel> baseModels) {
-                        Log.i(TAG, "success " + baseModels.size());
-                        for (BaseModel baseModel : baseModels) {
-                            DirectoryInfo directoryInfo = new DirectoryInfo();
-                            Songci chinaTang = (Songci) baseModel;
-                            directoryInfo.setAuther(chinaTang.getAuth());
-                            directoryInfo.setName(chinaTang.getTitle());
-                            directoryInfo.setType(2);
-                            directoryInfo.setId(chinaTang.getId());
-                            directoryInfos.add(directoryInfo);
-                            searchAdapter.notifyDataSetChanged();
-                        }
+                directoryInfo.setAuther(chinaTang.getAuthor());
+                directoryInfo.setName(chinaTang.getTitle());
+                directoryInfo.setType(3);
+                directoryInfos.add(directoryInfo);
+                searchAdapter.notifyDataSetChanged();
+            }
+        }
 
-                    }
-
-                    @Override
-                    public void error(Exception e) {
-                        Log.e(TAG, "error " + e.toString());
-                    }
-                }
-        );
+//        MyDataBase.getInstence().loadFromDBAsyn(
+//                sqlTangShi, null, new ChinaTang(), new MyDataBase.FindFinish() {
+//                    @Override
+//                    public void success(List<BaseModel> baseModels) {
+//                        Log.i(TAG, "success " + baseModels.size());
+//                        for (BaseModel baseModel : baseModels) {
+//                            DirectoryInfo directoryInfo = new DirectoryInfo();
+//                            ChinaTang chinaTang = (ChinaTang) baseModel;
+//                            directoryInfo.setAuther(chinaTang.getAuthor());
+//                            directoryInfo.setName(chinaTang.getTitle());
+//                            directoryInfo.setType(1);
+//                            directoryInfo.setId(chinaTang.getParentID());
+//                            directoryInfos.add(directoryInfo);
+//                            searchAdapter.notifyDataSetChanged();
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void error(Exception e) {
+//                        Log.e(TAG, "error " + e.toString());
+//                    }
+//                }
+//        );
+//        MyDataBaseSong.getInstence().loadFromDBAsyn(
+//                sqlSongci, null, new Songci(), new MyDataBaseSong.FindFinish() {
+//                    @Override
+//                    public void success(List<BaseModel> baseModels) {
+//                        Log.i(TAG, "success " + baseModels.size());
+//                        for (BaseModel baseModel : baseModels) {
+//                            DirectoryInfo directoryInfo = new DirectoryInfo();
+//                            Songci chinaTang = (Songci) baseModel;
+//                            directoryInfo.setAuther(chinaTang.getAuth());
+//                            directoryInfo.setName(chinaTang.getTitle());
+//                            directoryInfo.setType(2);
+//                            directoryInfo.setId(chinaTang.getId());
+//                            directoryInfos.add(directoryInfo);
+//                            searchAdapter.notifyDataSetChanged();
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void error(Exception e) {
+//                        Log.e(TAG, "error " + e.toString());
+//                    }
+//                }
+//        );
     }
 
     private void showPopup() {
-        PopupWindow popupWindow = new PopupWindow(mContext);
+        final PopupWindow popupWindow = new PopupWindow(mContext);
         ListView listView = (ListView) LayoutInflater.from(mContext).inflate(R.layout.search_popup_listview, null);
-        final String[] params = new String[]{"诗名","诗人","单词"};
-        ArrayAdapter arrayAdapter = new ArrayAdapter(mContext,R.layout.search_popup_list_item,R.id.search_popup_list_item_text,params);
+        final String[] params = new String[]{"诗名", "诗人"};
+        ArrayAdapter arrayAdapter = new ArrayAdapter(mContext, R.layout.search_popup_list_item, R.id.search_popup_list_item_text, params);
         listView.setAdapter(arrayAdapter);
         popupWindow.setContentView(listView);
+        popupWindow.setWidth(ScreenUtil.dip2px(mContext, 56));
+        popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
+//        popupWindow.setWidth(LayoutParams.WRAP_CONTENT);
+//        popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.showAsDropDown(typeTextView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 type = position;
                 typeTextView.setText(params[position]);
+                popupWindow.dismiss();
             }
         });
     }
@@ -207,6 +288,11 @@ public class SearchView extends LinearLayout {
                     if (directoryInfos.get(position).getType() == 2) {
                         Intent intent = new Intent(mContext, SongciActivity.class);
                         intent.putExtra("id", directoryInfos.get(position).getId());
+                        mContext.startActivity(intent);
+                    }
+                    if (directoryInfos.get(position).getType() == 3){
+                        Intent intent = new Intent(mContext, PoetryDetailActivity.class);
+                        intent.putExtra(PoetryDetailActivity.INTENT, directoryInfos.get(position).getName());
                         mContext.startActivity(intent);
                     }
                 }

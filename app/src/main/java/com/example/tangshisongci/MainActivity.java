@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private CustomActionBar customActionBar;
     private MainTab mainTab;
     private ViewPager viewPager;
-    private DirectoryView directoryView;
+    private DirectoryView tangshiView;
     private TabPagerAdapter tabPagerAdapter;
     private DirectoryView songciView;
     private DirectoryView yuanquView;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mainTab = (MainTab) findViewById(R.id.main_tab);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabPagerAdapter = new TabPagerAdapter();
-        directoryView = new DirectoryView(this, 1);
+        tangshiView = new DirectoryView(this, 1);
         songciView = new DirectoryView(this, 2);
         yuanquView = new DirectoryView(this, 3);
         kitView = new KitView(this);
@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             if (position == 0) {
-                container.addView(directoryView);
-                return directoryView;
+                container.addView(tangshiView);
+                return tangshiView;
             } else if (position == 1) {
                 container.addView(songciView);
                 return songciView;

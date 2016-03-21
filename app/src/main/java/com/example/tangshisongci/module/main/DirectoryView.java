@@ -2,7 +2,6 @@ package com.example.tangshisongci.module.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.tangshisongci.R;
-import com.example.tangshisongci.model.ChinaTang;
+import com.example.tangshisongci.model.Poetry;
 import com.example.tangshisongci.model.Songci;
 import com.example.tangshisongci.model.base.BaseModel;
 import com.example.tangshisongci.model.base.MyDataBase;
 import com.example.tangshisongci.model.base.MyDataBaseSong;
+import com.example.tangshisongci.module.kit.PoetryDetailActivity;
 import com.example.tangshisongci.module.songci.SongciActivity;
-import com.example.tangshisongci.module.tangshi.TangshiDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +29,12 @@ import java.util.List;
 public class DirectoryView extends LinearLayout {
     private String TAG = DirectoryView.class.getName();
     private Context mContext;
-    @Nullable
     private ListView tangshiList;
     private TangShiAdapter tangShiAdapter;
-    private List<ChinaTang> tangshis = new ArrayList<>();
+//    private List<Poetry> tangshis = new ArrayList<>();
     private List<Songci> songcis = new ArrayList<>();
-    private int type = -1;//type 1 唐诗  2宋词  3元曲
+    private List<Poetry> poetries = new ArrayList<>();
+    private int type = -1;//type 1 唐诗  2宋词  3元曲  4近体诗
 
     public DirectoryView(Context context, int type) {
         super(context);
@@ -66,22 +65,27 @@ public class DirectoryView extends LinearLayout {
             case 3:
                 initYuanyu();
                 break;
+            case 4:
+                initPoetry();
+                break;
         }
     }
 
 
     private void initTangshi() {
-        List<BaseModel> baseModels = MyDataBase.getInstence().loadAllFromDB(new ChinaTang());
-        List<ChinaTang> chinaTangs = new ArrayList<>();
+//        List<BaseModel> baseModels = MyDataBase.getInstence().loadAllFromDB(new ChinaTang());
+        List<BaseModel> baseModels = MyDataBase.getInstence().loadFromDB("select * from "+ new Poetry().getTableName()+" " +
+                "where ClassID = ?",new String[]{18+""},new Poetry());
+        List<Poetry> chinaTangs = new ArrayList<>();
         if (baseModels == null || baseModels.size() == 0) {
             return;
         }
         for (BaseModel baseModel : baseModels) {
-            if (baseModel instanceof ChinaTang) {
-                chinaTangs.add((ChinaTang) baseModel);
+            if (baseModel instanceof Poetry) {
+                chinaTangs.add((Poetry) baseModel);
             }
         }
-        tangshis.addAll(chinaTangs);
+        poetries.addAll(chinaTangs);
         tangShiAdapter.notifyDataSetChanged();
     }
 
@@ -123,15 +127,32 @@ public class DirectoryView extends LinearLayout {
         tangShiAdapter.notifyDataSetChanged();
     }
 
+    private void initPoetry() {
+        List<BaseModel> baseModels = MyDataBase.getInstence().loadFromDB("select * from "+new Poetry().getTableName()+ "  " +
+                " where ClassID = ? or ClassID = ? or ClassID = ? ", new String[]{"5","6","8"},new Poetry());
+        if (baseModels == null || baseModels.size() == 0){
+            return ;
+        }
+        for (BaseModel baseModel : baseModels) {
+            if (baseModel instanceof Poetry) {
+                poetries.add((Poetry)baseModel);
+            }
+        }
+        Log.i(TAG, "initPoetry: "+poetries.size());
+        tangShiAdapter.notifyDataSetChanged();
+    }
+
     private class TangShiAdapter extends BaseAdapter {
         @Override
         public int getCount() {
             if (type == 1) {
-                return tangshis.size();
+                return poetries.size();
             } else if (type == 2) {
                 return songcis.size();
-            }else if(type==3){
+            } else if (type == 3) {
                 return songcis.size();
+            } else if (type == 4){
+                return poetries.size();
             }
             return 0;
         }
@@ -154,23 +175,23 @@ public class DirectoryView extends LinearLayout {
             } else {
                 directoryItem = (DirectoryItem) convertView;
             }
-            if (type == 1) {
-                Log.i(TAG, "getView "+type);
-                directoryItem.setView(tangshis.get(position).getTitle(),
-                        tangshis.get(position).getAuthor(),
-                        tangshis.get(position).getClassName());
-                directoryItem.setOnClickListener(null);
-                directoryItem.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(mContext, TangshiDetailActivity.class);
-                        intent.putExtra("parentID", tangshis.get(position).getParentID());
-                        mContext.startActivity(intent);
-                    }
-                });
-            }
+//            if (type == 1) {
+//                Log.i(TAG, "getView " + type);
+//                directoryItem.setView(tangshis.get(position).getTitle(),
+//                        tangshis.get(position).getAuthor(),
+//                        "");
+//                directoryItem.setOnClickListener(null);
+//                directoryItem.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Intent intent = new Intent(mContext, PoetryDetailActivity.class);
+//                        intent.putExtra(PoetryDetailActivity.INTENT, tangshis.get(position).getTitle());
+//                        mContext.startActivity(intent);
+//                    }
+//                });
+//            }
             if (type == 2 || type == 3) {
-                Log.i(TAG, "getView "+type);
+                Log.i(TAG, "getView " + type);
                 directoryItem.setView(songcis.get(position).getTitle(),
                         songcis.get(position).getAuth(),
                         "");
@@ -180,6 +201,20 @@ public class DirectoryView extends LinearLayout {
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, SongciActivity.class);
                         intent.putExtra("id", songcis.get(position).getId());
+                        mContext.startActivity(intent);
+                    }
+                });
+            }
+            if (type == 4 || type ==1){
+                directoryItem.setView(poetries.get(position).getTitle(),
+                        poetries.get(position).getAuthor(),
+                        poetries.get(position).getType2());
+                directoryItem.setOnClickListener(null);
+                directoryItem.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, PoetryDetailActivity.class);
+                        intent.putExtra(PoetryDetailActivity.INTENT, poetries.get(position).getTitle());
                         mContext.startActivity(intent);
                     }
                 });

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.tangshisongci.R;
 import com.example.tangshisongci.module.search.SearchActivity;
@@ -17,6 +18,7 @@ import com.example.tangshisongci.module.search.SearchActivity;
 public class CustomActionBar extends LinearLayout {
     private Context mContext;
     private ImageView searchImg;
+    private TextView title;
 
     public CustomActionBar(Context context) {
         super(context);
@@ -32,6 +34,7 @@ public class CustomActionBar extends LinearLayout {
 
     private void init() {
         LayoutInflater.from(mContext).inflate(R.layout.custom_action_bar, this);
+        title = (TextView) findViewById(R.id.cab_title);
         searchImg = (ImageView) findViewById(R.id.custom_action_bar_search);
         searchImg.setOnClickListener(new OnClickListener() {
             @Override
@@ -40,5 +43,9 @@ public class CustomActionBar extends LinearLayout {
                 mContext.startActivity(intent);
             }
         });
+    }
+
+    public void setTitle(String text){
+        title.setText(text);
     }
 }

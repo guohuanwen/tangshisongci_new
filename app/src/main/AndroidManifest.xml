@@ -19,6 +19,9 @@
         <activity android:name=".module.tangshi.TangshiDetailActivity"></activity>
         <activity android:name=".module.songci.SongciActivity"></activity>
         <activity android:name=".module.search.SearchActivity"/>
+        <activity android:name=".bace.BaceActivity"></activity>
+        <activity android:name=".module.kit.PoetryActivity"></activity>
+        <activity android:name=".module.kit.PoetryDetailActivity"></activity>
     </application>
 
 </manifest>
