@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -58,6 +59,32 @@ public class MyDataBase {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void loadAllFromDBAysc(final MyModel myModel, final FindFinish findFinish) {
+        Log.i(TAG, "loadAllFromDBAysc: ");
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+                Log.i(TAG, "doInBackground: ");
+                try {
+                    Cursor cursor = db.rawQuery(" select  *  from  " + myModel.getTableName(), null);
+                    return myModel.fromCursor(cursor);
+                } catch (Exception e) {
+                    Log.e(TAG, "loadAllFromDB " + e.toString());
+                    e.printStackTrace();
+                    findFinish.error(e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                Log.i(TAG, "onPostExecute: ");
+                findFinish.success((List<BaseModel>)o);
+            }
+        };
+        asyncTask.execute();
     }
 
     public List<BaseModel> loadFromDB(String sql, String[] param, MyModel myModel) {

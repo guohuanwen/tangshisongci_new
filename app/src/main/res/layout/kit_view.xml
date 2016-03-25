@@ -23,6 +23,21 @@
     <TextView
         android:id="@+id/jizhuanwan"
         style="@style/KitText"
+        android:text="脑经急转弯"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/zuoyouming"
+        style="@style/KitText"
+        android:text="座右铭"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/raokouling"
+        style="@style/KitText"
+        android:text="绕口令"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

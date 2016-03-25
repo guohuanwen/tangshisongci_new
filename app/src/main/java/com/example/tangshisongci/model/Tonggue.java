@@ -6,7 +6,7 @@ import com.example.tangshisongci.model.base.MyModel;
 /**
  * Created by bigwen on 2016/1/29.
  */
-@MyAnnotion.DBName("Tonggue")
+@MyAnnotion.DBName("Tongue")
 public class Tonggue extends MyModel {
     @MyAnnotion.DBField
     private String Title;

@@ -270,7 +270,7 @@ public class SearchView extends LinearLayout {
                 @Override
                 public void onClick(View v) {
 //                    if (directoryInfos.get(position).getType() == 1) {
-//                        Intent intent = new Intent(mContext, TangshiDetailActivity.class);
+//                        INTENT intent = new INTENT(mContext, TangshiDetailActivity.class);
 //                        intent.putExtra("parentID", directoryInfos.get(position).getId());
 //                        mContext.startActivity(intent);
 //                    }

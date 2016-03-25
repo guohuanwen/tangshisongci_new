@@ -184,7 +184,7 @@ public class DirectoryView extends LinearLayout {
 //                directoryItem.setOnClickListener(new OnClickListener() {
 //                    @Override
 //                    public void onClick(View v) {
-//                        Intent intent = new Intent(mContext, PoetryDetailActivity.class);
+//                        INTENT intent = new INTENT(mContext, PoetryDetailActivity.class);
 //                        intent.putExtra(PoetryDetailActivity.INTENTTITLE, tangshis.get(position).getTitle());
 //                        mContext.startActivity(intent);
 //                    }

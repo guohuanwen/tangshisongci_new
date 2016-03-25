@@ -21,6 +21,8 @@ public class KitView extends LinearLayout {
     private TextView xinhuaView;
     private TextView xiuhouView;
     private TextView jizhuanView;
+    private TextView zuoyouView;
+    private TextView raokouView;
 
     public KitView(Context context) {
         super(context);
@@ -40,6 +42,8 @@ public class KitView extends LinearLayout {
         xinhuaView = (TextView) findViewById(R.id.xinhua);
         xiuhouView = (TextView) findViewById(R.id.xiehouyu);
         jizhuanView = (TextView) findViewById(R.id.jizhuanwan);
+        zuoyouView = (TextView) findViewById(R.id.zuoyouming);
+        raokouView = (TextView) findViewById(R.id.raokouling);
         initClick();
     }
 
@@ -60,7 +64,7 @@ public class KitView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, XieHouYuActivity.class);
-                i.putExtra(XieHouYuActivity.Intent,1);
+                i.putExtra(XieHouYuActivity.INTENT,1);
                 mContext.startActivity(i);
             }
         });
@@ -68,8 +72,25 @@ public class KitView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, XieHouYuActivity.class);
-                i.putExtra(XieHouYuActivity.Intent,2);
+                i.putExtra(XieHouYuActivity.INTENT,2);
                 mContext.startActivity(i);
+            }
+        });
+        zuoyouView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, XieHouYuActivity.class);
+                i.putExtra(XieHouYuActivity.INTENT,3);
+                mContext.startActivity(i);
+            }
+        });
+        raokouView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, XieHouYuActivity.class);
+                i.putExtra(XieHouYuActivity.INTENT,4);
+                mContext.startActivity(i);
+
             }
         });
     }
