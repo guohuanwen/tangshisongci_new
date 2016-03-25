@@ -20,6 +20,7 @@ public class KitView extends LinearLayout {
     private TextView recentPoetryView;
     private TextView xinhuaView;
     private TextView xiuhouView;
+    private TextView jizhuanView;
 
     public KitView(Context context) {
         super(context);
@@ -38,7 +39,7 @@ public class KitView extends LinearLayout {
         recentPoetryView = (TextView) findViewById(R.id.recent_poetry);
         xinhuaView = (TextView) findViewById(R.id.xinhua);
         xiuhouView = (TextView) findViewById(R.id.xiehouyu);
-
+        jizhuanView = (TextView) findViewById(R.id.jizhuanwan);
         initClick();
     }
 
@@ -47,6 +48,28 @@ public class KitView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 mContext.startActivity(new Intent(mContext, PoetryActivity.class));
+            }
+        });
+        xinhuaView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, XinHuaActivity.class));
+            }
+        });
+        xiuhouView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, XieHouYuActivity.class);
+                i.putExtra(XieHouYuActivity.Intent,1);
+                mContext.startActivity(i);
+            }
+        });
+        jizhuanView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, XieHouYuActivity.class);
+                i.putExtra(XieHouYuActivity.Intent,2);
+                mContext.startActivity(i);
             }
         });
     }

@@ -20,4 +20,9 @@
         style="@style/KitText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/jizhuanwan"
+        style="@style/KitText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

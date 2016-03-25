@@ -185,7 +185,7 @@ public class DirectoryView extends LinearLayout {
 //                    @Override
 //                    public void onClick(View v) {
 //                        Intent intent = new Intent(mContext, PoetryDetailActivity.class);
-//                        intent.putExtra(PoetryDetailActivity.INTENT, tangshis.get(position).getTitle());
+//                        intent.putExtra(PoetryDetailActivity.INTENTTITLE, tangshis.get(position).getTitle());
 //                        mContext.startActivity(intent);
 //                    }
 //                });
@@ -214,7 +214,7 @@ public class DirectoryView extends LinearLayout {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, PoetryDetailActivity.class);
-                        intent.putExtra(PoetryDetailActivity.INTENT, poetries.get(position).getTitle());
+                        intent.putExtra(PoetryDetailActivity.INTENTTITLE, poetries.get(position).get_id());
                         mContext.startActivity(intent);
                     }
                 });

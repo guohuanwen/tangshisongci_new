@@ -8,6 +8,9 @@ import com.example.tangshisongci.model.base.MyModel;
  */
 @MyAnnotion.DBName("Poetry")
 public class Poetry extends MyModel {
+
+    @MyAnnotion.DBField
+    private int _id;
     @MyAnnotion.DBField
     private String Type1;
     @MyAnnotion.DBField
@@ -26,6 +29,14 @@ public class Poetry extends MyModel {
     private int ClassID;
     @MyAnnotion.DBField
     private int mark;
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
 
     public String getType1() {
         return Type1;

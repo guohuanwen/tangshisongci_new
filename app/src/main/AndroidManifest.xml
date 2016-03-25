@@ -22,6 +22,8 @@
         <activity android:name=".bace.BaceActivity"></activity>
         <activity android:name=".module.kit.PoetryActivity"></activity>
         <activity android:name=".module.kit.PoetryDetailActivity"></activity>
+        <activity android:name=".module.kit.XinHuaActivity"></activity>
+        <activity android:name=".module.kit.XieHouYuActivity"></activity>
     </application>
 
 </manifest>

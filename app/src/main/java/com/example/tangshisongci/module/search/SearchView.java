@@ -3,7 +3,6 @@ package com.example.tangshisongci.module.search;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +26,10 @@ import com.example.tangshisongci.model.base.MyDataBaseSong;
 import com.example.tangshisongci.module.kit.PoetryDetailActivity;
 import com.example.tangshisongci.module.main.DirectoryItem;
 import com.example.tangshisongci.module.songci.SongciActivity;
-import com.example.tangshisongci.module.tangshi.TangshiDetailActivity;
 import com.example.tangshisongci.tool.ScreenUtil;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by bigwen on 2016/2/1.
@@ -49,8 +45,6 @@ public class SearchView extends LinearLayout {
     private SearchAdapter searchAdapter;
     private List<DirectoryInfo> directoryInfos = new ArrayList<>();
     private int type = 0;//0：诗词名字搜索    1：人名
-    //解决 数据库中 诗词重复问题
-    private Set<String> names = new HashSet<>();
 
     public SearchView(Context context) {
         super(context);
@@ -130,21 +124,20 @@ public class SearchView extends LinearLayout {
         if (type == 2) {
 
         }
-        List<BaseModel> baseModels = MyDataBase.getInstence().loadFromDB(sTang, new String[]{searchText}, new ChinaTang());
-        Log.i(TAG, "initDateShici: "+baseModels.size());
-        if (baseModels != null && baseModels.size() > 0) {
-            for (BaseModel baseModel : baseModels) {
-                DirectoryInfo directoryInfo = new DirectoryInfo();
-                ChinaTang chinaTang = (ChinaTang) baseModel;
-                directoryInfo.setAuther(chinaTang.getAuthor());
-                directoryInfo.setName(chinaTang.getTitle());
-                names.add(chinaTang.getTitle());
-                directoryInfo.setType(1);
-                directoryInfo.setId(chinaTang.getParentID());
-                directoryInfos.add(directoryInfo);
-                searchAdapter.notifyDataSetChanged();
-            }
-        }
+//        List<BaseModel> baseModels = MyDataBase.getInstence().loadFromDB(sTang, new String[]{searchText}, new ChinaTang());
+//        Log.i(TAG, "initDateShici: "+baseModels.size());
+//        if (baseModels != null && baseModels.size() > 0) {
+//            for (BaseModel baseModel : baseModels) {
+//                DirectoryInfo directoryInfo = new DirectoryInfo();
+//                ChinaTang chinaTang = (ChinaTang) baseModel;
+//                directoryInfo.setAuther(chinaTang.getAuthor());
+//                directoryInfo.setName(chinaTang.getTitle());
+//                directoryInfo.setType(3);
+//                directoryInfo.setId(chinaTang.getParentID());
+//                directoryInfos.add(directoryInfo);
+//                searchAdapter.notifyDataSetChanged();
+//            }
+//        }
 
         List<BaseModel> baseModelss = MyDataBaseSong.getInstence().loadFromDB(sSong, new String[]{searchText}, new Songci());
         if (baseModelss != null && baseModelss.size() > 0) {
@@ -153,7 +146,6 @@ public class SearchView extends LinearLayout {
                 Songci chinaTang = (Songci) baseModel;
                 directoryInfo.setAuther(chinaTang.getAuth());
                 directoryInfo.setName(chinaTang.getTitle());
-                names.add(chinaTang.getTitle());
                 directoryInfo.setType(2);
                 directoryInfo.setId(chinaTang.getId());
                 directoryInfos.add(directoryInfo);
@@ -164,14 +156,11 @@ public class SearchView extends LinearLayout {
         List<BaseModel> baseModel3 = MyDataBase.getInstence().loadFromDB(sPoetry, new String[]{searchText}, new Poetry());
         if (baseModel3 != null && baseModel3.size() > 0) {
             for (BaseModel baseModel : baseModel3) {
-
                 DirectoryInfo directoryInfo = new DirectoryInfo();
                 Poetry chinaTang = (Poetry) baseModel;
-                if (names.contains(chinaTang.getTitle())){
-                    continue;
-                }
                 directoryInfo.setAuther(chinaTang.getAuthor());
                 directoryInfo.setName(chinaTang.getTitle());
+                directoryInfo.setId(chinaTang.get_id());
                 directoryInfo.setType(3);
                 directoryInfos.add(directoryInfo);
                 searchAdapter.notifyDataSetChanged();
@@ -280,11 +269,11 @@ public class SearchView extends LinearLayout {
             directoryItem.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (directoryInfos.get(position).getType() == 1) {
-                        Intent intent = new Intent(mContext, TangshiDetailActivity.class);
-                        intent.putExtra("parentID", directoryInfos.get(position).getId());
-                        mContext.startActivity(intent);
-                    }
+//                    if (directoryInfos.get(position).getType() == 1) {
+//                        Intent intent = new Intent(mContext, TangshiDetailActivity.class);
+//                        intent.putExtra("parentID", directoryInfos.get(position).getId());
+//                        mContext.startActivity(intent);
+//                    }
                     if (directoryInfos.get(position).getType() == 2) {
                         Intent intent = new Intent(mContext, SongciActivity.class);
                         intent.putExtra("id", directoryInfos.get(position).getId());
@@ -292,7 +281,7 @@ public class SearchView extends LinearLayout {
                     }
                     if (directoryInfos.get(position).getType() == 3){
                         Intent intent = new Intent(mContext, PoetryDetailActivity.class);
-                        intent.putExtra(PoetryDetailActivity.INTENT, directoryInfos.get(position).getName());
+                        intent.putExtra(PoetryDetailActivity.INTENTTITLE, directoryInfos.get(position).getId());
                         mContext.startActivity(intent);
                     }
                 }

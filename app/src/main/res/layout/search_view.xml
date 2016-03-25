@@ -37,7 +37,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/search_view_edit_img"
             android:layout_toRightOf="@+id/search_view_img"
-            android:textSize="22sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/search_view_edit_img"

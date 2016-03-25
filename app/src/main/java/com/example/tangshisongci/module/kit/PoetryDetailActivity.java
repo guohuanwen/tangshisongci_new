@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.example.tangshisongci.R;
 import com.example.tangshisongci.bace.BaceActivity;
 import com.example.tangshisongci.model.Poetry;
@@ -24,15 +23,15 @@ public class PoetryDetailActivity extends BaceActivity {
     private TextView text;
     private TextView note;
     private TextView explain;
-    private String title;
-    public static String INTENT = "Title";
+    private int title;
+    public static String INTENTTITLE = "_id";
     private String TAG = PoetryDetailActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        title = getIntent().getStringExtra(INTENT);
-        if (title == null || title.equals("")) {
+        title = getIntent().getIntExtra(INTENTTITLE, -1);
+        if (title == -1) {
             return;
         }
         Log.i(TAG, "onCreate: " + title);
@@ -49,10 +48,10 @@ public class PoetryDetailActivity extends BaceActivity {
         loadDB(title);
     }
 
-    private void loadDB(String parentID) {
+    private void loadDB(int parentID) {
         MyDataBase.getInstence().loadFromDBAsyn(
-                " select  *  from " + new Poetry().getTableName() + " where Title like ? ",
-                new String[]{"%" + parentID + "%"},
+                " select  *  from " + new Poetry().getTableName() + " where _id = ? ",
+                new String[]{""+parentID},
                 new Poetry(), new MyDataBase.FindFinish() {
                     @Override
                     public void success(final List<BaseModel> baseModels) {
@@ -80,18 +79,22 @@ public class PoetryDetailActivity extends BaceActivity {
         name.setText(chinaTang.getTitle());
         poet.setText(chinaTang.getAuthor());
         String t = chinaTang.getContent();
-        t = t.replace("，", ",\n");
-        t = t.replace("。", "。\n");
-        t = t.replace("？", "？\n");
-        t = t.replace("！", "！\n");
-        t = t.replace("；", "；\n");
-        t = t.replaceAll(" ", "");
+        if (t != null && !t.isEmpty()) {
+            t = t.replace("，", ",\n");
+            t = t.replace("。", "。\n");
+            t = t.replace("？", "？\n");
+            t = t.replace("！", "！\n");
+            t = t.replace("；", "；\n");
+            t = t.replaceAll(" ", "");
+            text.setText(t);
+        }
         String n = chinaTang.getDescription();
-        n = n.replaceAll("。", "。\n");
-        n = n.replaceAll(" ", "");
-        text.setText(t);
-        note.setText(n);
-        explain.setText(chinaTang.getDescription());
+        if (n != null && !n.isEmpty()) {
+            n = n.replaceAll("。", "。\n");
+            n = n.replaceAll(" ", "");
+            note.setText(n);
+        }
+//        explain.setText(chinaTang.getDescription());
     }
 
 

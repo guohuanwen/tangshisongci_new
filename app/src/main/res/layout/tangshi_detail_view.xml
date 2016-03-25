@@ -16,8 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:textSize="24sp"
-            android:layout_marginTop="16dp"
-            android:text="感遇·其一" />
+            android:layout_marginTop="16dp" />
 
         <TextView
             android:id="@+id/tangshi_detail_view_poet"
@@ -26,8 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tangshi_detail_view_name"
             android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:text="张九龄" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tangshi_detail_view_text"
@@ -37,11 +35,10 @@
             android:gravity="left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tangshi_detail_view_poet"
-            android:text="泽兰逢春茂盛芳馨， \n桂花遇秋皎洁清新。\n 兰桂欣欣生机勃发， \n春秋自成佳节良辰。\n 谁能领悟山中隐士，\n 闻香深生仰慕之情？\n 花卉流香原为天性，\n 何求美人采撷扬名。  " />
-        <TextView
+            android:layout_below="@+id/tangshi_detail_view_poet">
+        </TextView>
+           <TextView
             android:id="@+id/note"
-            android:text="【注释】"
             android:textSize="14dp"
             android:layout_marginTop="8dp"
             android:layout_below="@+id/tangshi_detail_view_text"
@@ -53,14 +50,12 @@
             android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/note"
-            android:text="１、葳蕤：枝叶茂盛而纷披。 ２、坐：因而。 ３、本心：天性。" />
+            android:layout_below="@+id/note" />
 
         <TextView
             android:id="@+id/background"
             android:layout_below="@+id/tangshi_detail_view_note"
             android:textSize="14sp"
-            android:text="【鉴赏】"
             android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -70,7 +65,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:layout_below="@+id/background"
-            android:text="此诗系张九龄遭谗贬谪后所作《感遇》十二首之冠首。诗借物起兴，自比兰桂， 抒发诗人孤芳自赏，气节清高，不求引用之情感。   诗一开始用整齐的偶句，以春兰秋桂对举，点出无限生机和清雅高洁之特征。 三、四句，写兰桂充满活力却荣而不媚，不求人知之品质。上半首写兰桂，不写人。 五、六句以“谁知”急转引出与兰桂同调的山中隐者来。末两句点出无心与物相竞的 情怀。   全诗一面表达了恬淡从容超脱的襟怀，另一面忧谗惧祸的心情也隐然可见。诗以 草木照应，旨诣深刻，于咏物背后，寄寓着生活哲理。"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
